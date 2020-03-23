@@ -31,6 +31,7 @@ var controller = {
 
     singin: (req, res) => {
         //find the user based in the email
+       // console.log("signin",req.body);
         const {
             email,
             password
