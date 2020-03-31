@@ -11,6 +11,7 @@ var controller = {
         User.findById(id)
         .populate('following', '_id name about email created')
         .populate('followers', '_id name about email created')
+        .select('_id name email photo about noControl role') 
         .exec((err, user) =>{
             if(err || !user){
                 return res.status(400).json({

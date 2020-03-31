@@ -9,6 +9,9 @@ const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 const fs = require('fs');
 const SocketIO = require('socket.io');
+//configuracion de las rutas
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 dotenv.config();
 
@@ -29,8 +32,7 @@ mongoose.connect('mongodb://142.93.9.136/dbplataforma',{ useNewUrlParser: true,u
        }); 
 
 
-//configuracion de las rutas
-const authRoutes = require('./routes/auth');
+
 
 
 //API docs
@@ -61,6 +63,7 @@ app.use(cookieParser());
 
 //cargar rutas
 app.use("/", authRoutes);
+app.use("/",userRoutes);
 
 
 

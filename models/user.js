@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema({
         trim: true,
         required: true
     },
+    noControl:{
+        type:String,
+        trim:true
+    },
     hashed_password:{
         type: String,
         required: true
@@ -44,6 +48,12 @@ const userSchema = new mongoose.Schema({
             type: ObjectId,
           ref: "User"
         }],
+        follwingGroup:[
+            {
+                type: ObjectId,
+                ref:"Group"
+            }
+        ],
         resetPasswordLink: {
             data: String,
             default: ""
