@@ -12,6 +12,7 @@ const SocketIO = require('socket.io');
 //configuracion de las rutas
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const groupRoutes = require('./routes/group');
 
 dotenv.config();
 
@@ -64,7 +65,7 @@ app.use(cookieParser());
 //cargar rutas
 app.use("/", authRoutes);
 app.use("/",userRoutes);
-
+app.use("/",groupRoutes);
 
 
 app.use(function(err,req,res,next){

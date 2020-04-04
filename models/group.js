@@ -10,9 +10,19 @@ const groupSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    photo:{
+        data: Buffer,
+        contentType: String
+    },
+    description:{
+        type:String
+    },
     created:{
         type: Date,
         default: Date.now
+    },
+    career:{
+        type:String
     },
     users:[
         {
