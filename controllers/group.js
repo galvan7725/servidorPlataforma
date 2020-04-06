@@ -71,6 +71,23 @@ allGroups : (req,res) =>{
             })
         }
     });
+},
+groupsByUser: (req,res) =>{
+    const user = req.profile;
+    Group.find({"teacher":user._id})
+    .populate('teacher','_id name')
+    .select("_id name created photo description carrer")
+    .exec((err,result)=>{
+        if(err){
+            res.status(404).json({
+                error:err
+            })
+        }else{
+            res.status(200).json({
+                result
+            })
+        }
+    });
 }
 }
 

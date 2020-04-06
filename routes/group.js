@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.post("/group/new",authController.requireSingin,groupController.newGroup);
 router.get("/group",authController.requireSingin,groupController.allGroups);
+router.get("/groups/:userId",authController.requireSingin,groupController.groupsByUser);
 
 
 router.param("userId", userController.userById);
