@@ -29,7 +29,8 @@ newGroup : async(req,res) =>{
         let group = new Group;
         group= _.extend(group, fields);
         //group.updated = Date.now();
-
+        group.career = fields.carrer;
+       // console.log("group:",group);
 
         if(files.photo){
             group.photo.data = fs.readFileSync(files.photo.path);
@@ -59,7 +60,7 @@ newGroup : async(req,res) =>{
 allGroups : (req,res) =>{
     Group.find()
     .populate('teacher','_id name')
-    .select("_id name created photo description carrer")
+    .select("_id name created description career")
     .exec((err,result)=>{
         if(err){
             res.status(404).json({
@@ -76,7 +77,7 @@ groupsByUser: (req,res) =>{
     const user = req.profile;
     Group.find({"teacher":user._id})
     .populate('teacher','_id name')
-    .select("_id name created photo description carrer")
+    .select("_id name created description career")
     .exec((err,result)=>{
         if(err){
             res.status(404).json({
