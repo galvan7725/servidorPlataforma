@@ -10,6 +10,24 @@ dotenv.config();
 
 const controller = {
 
+    groupById: (req, res, next, id) =>{
+        Group.findById(id)
+        //.populate('publications', '_id')
+         //populate('users', '_id name about email created')
+        .populate('teacher','_id name')
+        .select('_id name created photo description career') 
+        .exec((err, group) =>{
+            if(err || !group){
+                return res.status(400).json({
+                    error: 'Group not found'
+                });
+            }
+
+            req.group = group; //Agrega una propiedad llamada profile con la informacion del usuario
+            next();
+        });
+    },
+
 newGroup : async(req,res) =>{
     
     //console.log(req);
@@ -89,7 +107,20 @@ groupsByUser: (req,res) =>{
             })
         }
     });
+},
+groupPhoto: (req, res,next)=>{
+    if(req.group.photo.data){
+        res.set("Content-Type", req.group.photo.contentType);
+        return res.send(req.group.photo.data);
+    }
+     next();
+},
+singleGroup: (req,res)=>{
+    req.group.photo = undefined;
+    return res.json(req.group);
+    
 }
+
 }
 
 module.exports = controller;
