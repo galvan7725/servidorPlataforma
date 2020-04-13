@@ -217,6 +217,32 @@ var controller = {
             }
             res.json(users);
         }).select('name');
+    },
+    catchKeyword : (req, res,next,text) =>{
+        req.text=text;
+        next();
+
+    }
+    ,
+
+    searchUser: (req, res)=>{
+        const text = req.text;
+        User.find({$or:[{noControl: {$regex : "^"+text} },{email: {$regex : "^"+text}},{name: {$regex : "^"+text}}]})
+        .select('_id name') 
+        .exec((err, user) =>{
+            if(err || !user){
+                return res.status(400).json({
+                    error: 'User not found'
+                });
+            }else{
+                return res.status(200).json({
+                    user:user
+                });
+            }
+
+        });
+
+        //return res.status(200).json({text:text});
     }
 }
 

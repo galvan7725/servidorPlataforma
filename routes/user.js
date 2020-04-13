@@ -16,6 +16,11 @@ router.get("/users",userController.allUsers);
 router.get("/user/:userId",authController.requireSingin,userController.getUser);
 router.put("/user/:userId",authController.requireSingin,userController.updateUser);
 router.delete("/user/:userId",[authController.requireSingin,userController.hasAuthorization],userController.deleteUser);
+
+//searh
+router.get("/user/search/:keyWord",authController.requireSingin,userController.searchUser);
+
+
 //photo
 router.get("/user/photo/:userId",userController.userPhoto);
 router.get("/user/name/:userId",userController.userName);
@@ -23,5 +28,6 @@ router.get("/user/name/:userId",userController.userName);
 router.get('/user/findpeople/:userId',authController.requireSingin,userController.findPeople);
 
 router.param("userId", userController.userById);
+router.param("keyWord", userController.catchKeyword);
 
 module.exports = router;
