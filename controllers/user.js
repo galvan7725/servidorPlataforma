@@ -222,9 +222,7 @@ var controller = {
         req.text=text;
         next();
 
-    }
-    ,
-
+    },
     searchUser: (req, res)=>{
         const text = req.text;
         User.find({$or:[{noControl: {$regex : "^"+text} },{email: {$regex : "^"+text}},{name: {$regex : "^"+text}}]})
