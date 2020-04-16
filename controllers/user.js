@@ -226,7 +226,7 @@ var controller = {
     searchUser: (req, res)=>{
         const text = req.text;
         User.find({$or:[{noControl: {$regex : "^"+text} },{email: {$regex : "^"+text}},{name: {$regex : "^"+text}}]})
-        .select('_id name') 
+        .select('_id name noControl email') 
         .exec((err, user) =>{
             if(err || !user){
                 return res.status(400).json({
