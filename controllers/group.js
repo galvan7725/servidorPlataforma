@@ -13,7 +13,7 @@ const controller = {
     groupById: (req, res, next, id) =>{
         Group.findById(id)
         //.populate('publications', '_id')
-         //populate('users', '_id name about email created')
+        .populate('users', '_id name noControl email')
         .populate('teacher','_id name')
         .select('_id name created photo description career') 
         .exec((err, group) =>{
@@ -119,6 +119,50 @@ singleGroup: (req,res)=>{
     req.group.photo = undefined;
     return res.json(req.group);
     
+},
+addUser: (req,res)=>{
+
+
+    Group.find({users:req.body.userId})
+    .exec((error,response)=>{
+        if(error || !response){
+            console.log("Error:",error);
+        }else{
+            console.log("Response",response);
+            if(response.length === 0){
+                //el usuario no esta agregado en el grupo
+                console.log("El usuario no existe en el grupo");
+                Group.findByIdAndUpdate(req.body.groupId,{$push:{users:req.body.userId}})
+                .populate('users', '_id name')
+                .exec((err,result)=>{
+                    if(err){
+                        return res.status(400).json({error:err});
+                    }else{
+                        return res.status(200).json({message:"success"});
+                    }
+                })
+                
+            }else{
+                //el usuario ya existe en el grupo
+                console.log("El usuario ya existe en el grupo");
+                return res.status(400).json({
+                    error:"El usuario ya existe en el grupo"
+                })
+            }
+        }
+    })
+/*
+    Group.findByIdAndUpdate(req.body.groupId,{$push:{users:req.body.userId}})
+    .populate('users', '_id name')
+    .exec((err,result)=>{
+        if(err){
+            return res.status(400).json({error:err});
+        }else{
+            return res.status(200).json({message:"success",
+            result});
+        }
+    })
+*/
 }
 
 }
