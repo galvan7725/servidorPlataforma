@@ -241,6 +241,15 @@ var controller = {
         });
 
         //return res.status(200).json({text:text});
+    },
+    hasAuthorization : (req,res,next) =>{
+        if(req.profile.role == "admin" || req.profile.role == "teacher"){
+            next();
+        }else{
+            res.status(400).json({
+                error:"El usuario no tiene autorizacion para realizar esta accion"
+            })
+        }
     }
 }
 

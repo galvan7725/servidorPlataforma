@@ -132,13 +132,15 @@ addUser: (req,res)=>{
             if(response.length === 0){
                 //el usuario no esta agregado en el grupo
                 console.log("El usuario no existe en el grupo");
-                Group.findByIdAndUpdate(req.body.groupId,{$push:{users:req.body.userId}})
-                .populate('users', '_id name')
+                Group.findByIdAndUpdate(req.body.groupId,{$push:{users:req.body.userId}},{new: true})
+                .populate('users', '_id name email noControl')
+                .populate('teacher','_id name')
+                .select('_id name created photo description career') 
                 .exec((err,result)=>{
                     if(err){
                         return res.status(400).json({error:err});
                     }else{
-                        return res.status(200).json({message:"success"});
+                        return res.status(200).json({result});
                     }
                 })
                 
@@ -151,18 +153,20 @@ addUser: (req,res)=>{
             }
         }
     })
-/*
-    Group.findByIdAndUpdate(req.body.groupId,{$push:{users:req.body.userId}})
-    .populate('users', '_id name')
+
+},
+deleteUser : (req, res)=>{
+    Group.findByIdAndUpdate(req.body.groupId,{$pull :{users:req.body.userId}},{new:true})
+    .populate('users', '_id name email noControl')
+    .populate('teacher','_id name')
+    .select('_id name created photo description career') 
     .exec((err,result)=>{
         if(err){
             return res.status(400).json({error:err});
         }else{
-            return res.status(200).json({message:"success",
-            result});
+            return res.status(200).json(result);
         }
     })
-*/
 }
 
 }
