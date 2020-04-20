@@ -108,6 +108,24 @@ groupsByUser: (req,res) =>{
         }
     });
 },
+groupsByStudent: (req, res)=>{
+    const user = req.profile;
+    Group.find({"users":user._id})
+    .populate('teacher','_id name')
+    .select("_id name created description career")
+    .exec((err,result)=>{
+        if(err){
+            res.status(404).json({
+                error:err
+            })
+        }else{
+            res.status(200).json({
+                result
+            })
+        }
+    });
+
+},
 groupPhoto: (req, res,next)=>{
     if(req.group.photo.data){
         res.set("Content-Type", req.group.photo.contentType);

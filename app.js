@@ -23,7 +23,7 @@ const server = app.listen(port, () =>{
 });
 
 
-mongoose.connect('mongodb://142.93.9.136/dbplataforma',{ useNewUrlParser: true,useUnifiedTopology: true})
+mongoose.connect('mongodb+srv://luis:acmilan7@cluster0-e1vua.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true,useUnifiedTopology: true})
     .then(() =>{
         console.log("la conexion a mongodb se ha realizado correctamente"); 
         });
