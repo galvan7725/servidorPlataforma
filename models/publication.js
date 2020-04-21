@@ -13,7 +13,10 @@ const publicationSchema = new mongoose.Schema({
     items:[{
         title:String,
         created:{type: Date, default: Date.now},
-
+        files: [{
+            data: Buffer,
+            contentType: String
+        }],
     }],
     mode:{
         type:String,
@@ -28,6 +31,10 @@ const publicationSchema = new mongoose.Schema({
         ref:"Evaluation"
         }
     ],
+    status:{
+        type:String
+    }
+    ,
     comments:[
         {
             text: String,

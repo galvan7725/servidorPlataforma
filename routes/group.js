@@ -15,6 +15,7 @@ router.get("/group/photo/:groupId",groupController.groupPhoto);
 router.get("/group/:groupId",authController.requireSingin,groupController.singleGroup);
 router.put("/group/newUser",authController.requireSingin,groupController.addUser);
 router.delete("/group/removeUser/:userId",[authController.requireSingin,userController.hasAuthorization],groupController.deleteUser);
+router.post("/group/new/publication/:groupId",[authController.requireSingin],groupController.newPublication);
 
 router.param("userId", userController.userById);
 router.param("groupId",groupController.groupById);

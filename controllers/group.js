@@ -1,4 +1,5 @@
 const Group = require('../models/group');
+const Publication = require('../models/publication');
 const dotenv = require("dotenv");
 const formidable = require('formidable');
 const _ = require('lodash');
@@ -185,6 +186,44 @@ deleteUser : (req, res)=>{
             return res.status(200).json(result);
         }
     })
+},
+newPublication : (req, res) =>{
+    let form = new formidable.IncomingForm();
+    form.keepExtensions= true;
+    form.parse(req, (err, fields, files) =>{
+        if(err){
+            return res.status(400).json({
+                error: "La foto no pudo ser guardada"
+            });
+        }
+        console.log("fields:",fields);
+        console.log("files:",files);
+        //save user with foto
+        
+        let group = new Group;
+        group= _.extend(group, fields);
+        //group.updated = Date.now();
+        group.career = fields.carrer;
+       // console.log("group:",group);
+
+        if(files.photo){
+            group.photo.data = fs.readFileSync(files.photo.path);
+            group.photo.contentType = files.photo.type;
+        }
+
+        group.save((err, result) =>{
+            if(err){
+                return res.status(400).json({
+                    error: err
+                });
+            }
+            res.json(group);
+        });
+           
+
+
+    });
+
 }
 
 }
