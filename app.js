@@ -22,14 +22,14 @@ const server = app.listen(port, () =>{
     
 });
 
-
-mongoose.connect('mongodb+srv://luis:acmilan7@cluster0-e1vua.mongodb.net/test?retryWrites=true&w=majority',{ useNewUrlParser: true,useUnifiedTopology: true})
-    .then(() =>{
+// cadena de conexion mongodb Atlas = mongodb+srv://luis:acmilan7@cluster0-e1vua.mongodb.net/test?retryWrites=true&w=majority
+mongoose.connect('mongodb://localhost:27017/dbplataforma',{ useNewUrlParser: true,useUnifiedTopology: true})
+.then(() =>{
         console.log("la conexion a mongodb se ha realizado correctamente"); 
         });
   
        mongoose.connection.on('error' , err => {
-        console.log('DB connection error: ${err.message}');
+        console.log(`DB connection error: ${err.message}`);
        }); 
 
 
