@@ -24,6 +24,7 @@ const groupSchema = new mongoose.Schema({
     career:{
         type:String
     },
+    updated: Date,
     users:[
         {
             type: ObjectId,
