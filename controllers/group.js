@@ -93,7 +93,7 @@ const controller = {
       if (files.photo) {
         group.photo.data = fs.readFileSync(files.photo.path);
         group.photo.contentType = files.photo.type;
-        Group.findByIdAndUpdate(req.group._id, {name:group.name,description:group.description,photo:group.photo},(err,result)=>{
+        Group.findByIdAndUpdate(req.group._id, {name:group.name,description:group.description,photo:group.photo,career:group.carrer},(err,result)=>{
           if (err) {
             return res.status(400).json({
               error: err,
@@ -104,7 +104,7 @@ const controller = {
         });
 
       }else{
-        Group.findByIdAndUpdate(req.group._id, {name:group.name,description:group.description},(err,result)=>{
+        Group.findByIdAndUpdate(req.group._id, {name:group.name,description:group.description,career:group.carrer},(err,result)=>{
           if (err) {
             return res.status(400).json({
               error: err,
@@ -130,7 +130,7 @@ const controller = {
         }
       });
       */
-    });
+    
 
   },
 
