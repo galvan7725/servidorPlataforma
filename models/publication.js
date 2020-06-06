@@ -2,9 +2,12 @@ const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema;
 
 const publicationSchema = new mongoose.Schema({
-    group:{
-        type: ObjectId,
-        ref: "Group"
+    title:{
+        type:String,
+        required: true
+    },
+    description:{
+        type:String
     },
     created:{
         type: Date,
@@ -13,10 +16,10 @@ const publicationSchema = new mongoose.Schema({
     items:[{
         title:String,
         created:{type: Date, default: Date.now},
-        files: [{
+        file: {
             data: Buffer,
             contentType: String
-        }],
+        },
     }],
     mode:{
         type:String,

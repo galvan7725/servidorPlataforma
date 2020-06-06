@@ -257,8 +257,72 @@ const controller = {
       }
       console.log("fields:", fields);
       console.log("files:", files);
-      //save user with foto
+      
 
+      
+      //save user with foto
+      /*
+      return res.status(200).json({ 
+        message:"success"
+      });
+      */
+      let publication = new Publication();
+      publication = _.extend(publication,fields);
+      if(fields.countFiles > 0){
+        let aux = [];
+        let auxField = {};
+        let auxWord = "";
+        for(const file in files){
+          console.log(`file.${file} = ${files[file].name}`);
+          auxField = {
+            title: files[file].name,
+            file:{
+              data : fs.readFileSync(files[file].path),
+              contentType: files[file].type
+            }
+          }
+          aux.push(auxField);
+        }
+        /*
+        for (let index = 0; index < fields.countFiles; index++) {
+          auxWord = `file${index+1}`;
+          auxWord = auxWord.toString();
+          console.log(auxWord);
+          console.log("file : ",files.auxWord);
+          auxField = {
+            title:files.file+(index+1).name,
+            file:{
+              data: fs.readFileSync(files.file+(index+1).path),
+              contentType: file+(index+1).type
+            }
+          }
+          aux.push(auxField);
+          
+        }
+        */
+        publication.items = aux;
+
+      }
+      publication.mode = fields.type;
+      publication.title = fields.title;
+      publication.description = fields.descriptionN;
+      if(fields.type == "activity"){
+        publication.expiration = fields.expiration;
+      }
+      publication.save((err, result)=>{
+        if(err || !result){
+          return res.status(400).json({
+            error: err,
+          });
+        }else{
+          //La publicacion se realizo de manera correcta.
+          //procedemos a agregar la  publication a su respectivo grupo de trabajo
+          
+          res.json(result);
+        }
+      })
+
+      /*
       let group = new Group();
       group = _.extend(group, fields);
       //group.updated = Date.now();
@@ -278,6 +342,7 @@ const controller = {
         }
         res.json(group);
       });
+      */
     });
   },
 };
