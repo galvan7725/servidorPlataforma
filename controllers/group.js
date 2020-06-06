@@ -12,6 +12,7 @@ const controller = {
     Group.findById(id)
       //.populate('publications', '_id')
       .populate("users", "_id name noControl email")
+      .populate("publications","_id title description items created mode status comments")
       .populate("teacher", "_id name")
       .select("_id name created photo description career")
       .exec((err, group) => {
@@ -315,34 +316,29 @@ const controller = {
             error: err,
           });
         }else{
+          console.log("Result1: ",result);
           //La publicacion se realizo de manera correcta.
           //procedemos a agregar la  publication a su respectivo grupo de trabajo
-          
-          res.json(result);
+          console.log("ResultID: ",result._id);
+          Group.findByIdAndUpdate(
+            req.group._id,
+            { $push: { publications: result._id } },
+            { new: true }
+          ).populate("users", "_id name email noControl")
+          .populate("publications","_id title description items")
+          .populate("teacher", "_id name")
+          .select("_id name created photo description career")
+          .exec((err, result) => {
+            if (err || !result) {
+              return res.status(400).json({ error: err });
+            } else {
+              console.log("Result", result);
+              return res.status(200).json(result);
+            }
+          });
         }
       })
 
-      /*
-      let group = new Group();
-      group = _.extend(group, fields);
-      //group.updated = Date.now();
-      group.career = fields.carrer;
-      // console.log("group:",group);
-
-      if (files.photo) {
-        group.photo.data = fs.readFileSync(files.photo.path);
-        group.photo.contentType = files.photo.type;
-      }
-
-      group.save((err, result) => {
-        if (err) {
-          return res.status(400).json({
-            error: err,
-          });
-        }
-        res.json(group);
-      });
-      */
     });
   },
 };
