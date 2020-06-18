@@ -1,4 +1,5 @@
 const Group = require("../models/group");
+const User = require("../models/user");
 const Publication = require("../models/publication");
 const dotenv = require("dotenv");
 const formidable = require("formidable");
@@ -12,7 +13,7 @@ const controller = {
     Group.findById(id)
       //.populate('publications', '_id')
       .populate("users", "_id name noControl email")
-      .populate("publications","_id title description items created mode status comments")
+      .populate("publications","_id title description created mode status comments expiration")
       .populate("teacher", "_id name")
       .select("_id name created photo description career")
       .exec((err, group) => {
@@ -212,12 +213,25 @@ const controller = {
           )
             .populate("users", "_id name email noControl")
             .populate("teacher", "_id name")
-            .select("_id name created photo description career")
-            .exec((err, result) => {
-              if (err) {
+            .populate("publications","_id title description created mode status comments expiration")
+            .select("_id name created description career")
+            .exec((err, rss2) => {
+              let auxr2 = rss2;
+              if (err || !rss2) {
+                console.log(err);
                 return res.status(400).json({ error: err });
               } else {
-                return res.status(200).json({ result });
+                User.findByIdAndUpdate(req.body.userId,{$push :{followingGroup:req.body.groupId}})
+                .exec((error2, response2)=>{
+                  if(error2 || !response2){
+                    console.log(error2);
+                    return res.status(400).json({ error: error2 });
+                  }else{
+                    console.log("aux",auxr2);
+                    return res.status(200).json({ result:rss2 });
+                  }
+                })
+
               }
             });
         } else {
@@ -238,12 +252,25 @@ const controller = {
     )
       .populate("users", "_id name email noControl")
       .populate("teacher", "_id name")
-      .select("_id name created photo description career")
-      .exec((err, result) => {
-        if (err) {
+      .populate("publications","_id title description created mode status comments expiration")
+      .select("_id name created  description career")
+      .exec((err, rss1) => {
+        let auxr = rss1;
+        if (err || !rss1) {
+          console.log(err);
           return res.status(400).json({ error: err });
         } else {
-          return res.status(200).json(result);
+          
+          User.findByIdAndUpdate(req.body.userId,{$pull :{followingGroup:req.body.groupId}})
+          .exec((error2, response2)=>{
+            if(error2 || !response2){
+              console.log(error2)
+              return res.status(400).json({ error: error2 });
+            }else{
+              return res.status(200).json({ result: rss1 });
+            }
+          })
+          //return res.status(200).json(result);
         }
       });
   },

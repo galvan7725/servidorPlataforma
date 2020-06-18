@@ -11,6 +11,7 @@ var controller = {
         User.findById(id)
         .populate('following', '_id name about email created')
         .populate('followers', '_id name about email created')
+        .populate('followingGroup', '_id')
         .select('_id name email photo about noControl role created') 
         .exec((err, user) =>{
             if(err || !user){
@@ -250,6 +251,9 @@ var controller = {
                 error:"El usuario no tiene autorizacion para realizar esta accion"
             })
         }
+    },
+    checkVisualitation : (req, res, next)=>{
+
     }
 }
 

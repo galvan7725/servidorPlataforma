@@ -48,7 +48,7 @@ const userSchema = new mongoose.Schema({
             type: ObjectId,
           ref: "User"
         }],
-        follwingGroup:[
+        followingGroup:[
             {
                 type: ObjectId,
                 ref:"Group"
