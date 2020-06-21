@@ -311,29 +311,14 @@ const controller = {
           }
           aux.push(auxField);
         }
-        /*
-        for (let index = 0; index < fields.countFiles; index++) {
-          auxWord = `file${index+1}`;
-          auxWord = auxWord.toString();
-          console.log(auxWord);
-          console.log("file : ",files.auxWord);
-          auxField = {
-            title:files.file+(index+1).name,
-            file:{
-              data: fs.readFileSync(files.file+(index+1).path),
-              contentType: file+(index+1).type
-            }
-          }
-          aux.push(auxField);
-          
-        }
-        */
+
         publication.items = aux;
 
       }
       publication.mode = fields.type;
       publication.title = fields.title;
       publication.description = fields.descriptionN;
+      publication.group = req.group._id;
       if(fields.type == "activity"){
         publication.expiration = fields.expiration;
       }

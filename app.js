@@ -13,6 +13,7 @@ const SocketIO = require('socket.io');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const groupRoutes = require('./routes/group');
+const publicationRoutes = require('./routes/publication');
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ app.use(cookieParser());
 app.use("/", authRoutes);
 app.use("/",userRoutes);
 app.use("/",groupRoutes);
+app.use("/",publicationRoutes);
 
 
 app.use(function(err,req,res,next){

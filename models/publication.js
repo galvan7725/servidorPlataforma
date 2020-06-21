@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const {ObjectId} = mongoose.Schema;
 
 const publicationSchema = new mongoose.Schema({
+    group:{
+        type: ObjectId,
+        ref: "Group"
+    },
     title:{
         type:String,
         required: true
