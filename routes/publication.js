@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get("/publication/:publicationId",authController.requireSingin,publicationController.singlePublication);
 router.get("/publication/file/:publicationId/:fileId",publicationController.publicationSingleFile);
+router.get("/publication/file/path/:publicationId/:fileId",publicationController.publicationSinglePath);
 
 
 //middleware

@@ -48,7 +48,7 @@ const controller = {
       })
     },
     publicationSingleFile : (req, res,next)=>{
-      console.log(req.files,req.fileId);
+      //console.log(req.files,req.fileId);
       let aux = {};
       for (let index = 0; index < req.files.length; index++) {
         if(req.files[index]._id == req.fileId){
@@ -56,7 +56,24 @@ const controller = {
         }
         
       }
-      console.log("Aux:",aux);
+      //console.log("Aux:",aux);
+      if(aux.file){
+        aux.file.data = undefined;
+        //res.set("Content-Type", aux.file.contentType);
+        return res.send(aux);
+      }
+      next();
+      
+    },
+    publicationSinglePath:(req, res, next) =>{
+      let aux = {};
+      for (let index = 0; index < req.files.length; index++) {
+        if(req.files[index]._id == req.fileId){
+          aux = req.files[index];
+        }
+        
+      }
+      //console.log("Aux:",aux);
       if(aux.file.data){
         
         res.set("Content-Type", aux.file.contentType);
