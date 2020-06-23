@@ -81,7 +81,19 @@ const controller = {
       }
       next();
       
+    },
+    publicationFileName : (req, res, next,name)=>{
+      if(name){
+        req.fileName = name;
+        next();
+      }else{
+        res.status(400).json({
+          error:"Faltan parametros"
+        })
+      }
+      
     }
+
 
 
 }

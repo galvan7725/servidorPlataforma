@@ -8,13 +8,14 @@ const publicationController = require('../controllers/publication');
 const router = express.Router();
 
 router.get("/publication/:publicationId",authController.requireSingin,publicationController.singlePublication);
-router.get("/publication/file/:publicationId/:fileId",publicationController.publicationSingleFile);
-router.get("/publication/file/path/:publicationId/:fileId",publicationController.publicationSinglePath);
+router.get("/publication/file/:publicationId/:fileId",authController.requireSingin,publicationController.publicationSingleFile);
+router.get("/publication/file/path/:publicationId/:fileId/:fileName",publicationController.publicationSinglePath);
 
 
 //middleware
 router.param("publicationId",publicationController.publicationById);
 router.param("fileId",publicationController.publicationFile);
+router.param("fileName",publicationController.publicationFileName)
 
 
 
