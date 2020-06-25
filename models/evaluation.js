@@ -7,11 +7,15 @@ const evaluationSchema = new mongoose.Schema({
             type:ObjectId,
             ref:"User"
         },
+        publication:{
+            type:ObjectId,
+            ref:"Publication"
+        },
         items:[{
             title:String,
             created:{type: Date, default: Date.now}
         }],
-        calificacion:String,
+        calification:String,
         comment:{
             type:String
         }
