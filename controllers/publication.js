@@ -92,6 +92,52 @@ const controller = {
         })
       }
       
+    },
+    newComment: (req, res)=>{
+      const { publicationId,userId,text } = req.body;
+      if(publicationId && userId && text){
+        const comment = { text,
+        postedBy:userId
+      }
+          Publication.findByIdAndUpdate(publicationId,{ $push: { comments: comment } },{ new: true })
+          .populate("comments", "_id text created")
+          .populate('comments.postedBy', '_id name')
+          .select("_id comments.text ")
+          .exec((err,result) =>{
+            if(err || !result){
+              return res.status(400).json({
+                error:err
+              })
+            }else{
+              return res.status(200).json(result);
+            }
+          })
+      }else{
+        res.status(400).json({
+          error:"Informacion incompleta"
+        })
+      }
+    },
+    
+    getComments : (req, res, next, id) => {
+      console.log("getComments",id);
+      Publication.findById(id)
+      .populate('comments.postedBy', '_id name')
+      .select("_id comments comments.id comments.text comments.created comments.postedBy")
+      .exec((err,result)=>{
+        if(err || !result){
+          
+          return res.status(400).json({
+            error: err
+          })
+        }else{
+          req.comments = result;
+          next();
+        }
+      })
+    },
+    getCommentsPublication : (req, res)=>{
+      return res.status(200).json(req.comments);
     }
 
 
