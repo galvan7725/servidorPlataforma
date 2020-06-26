@@ -13,10 +13,14 @@ const evaluationSchema = new mongoose.Schema({
         },
         items:[{
             title:String,
-            created:{type: Date, default: Date.now}
+            created:{type: Date, default: Date.now},
+            file: {
+                data: Buffer,
+                contentType: String
+            },
         }],
         calification:String,
-        comment:{
+        comments:{
             type:String
         }
 
