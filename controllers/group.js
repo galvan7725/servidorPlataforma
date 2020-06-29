@@ -319,6 +319,16 @@ const controller = {
       publication.title = fields.title;
       publication.description = fields.descriptionN;
       publication.group = req.group._id;
+      console.log("ItemLinks:",fields.itemLinks.split(","));
+
+      let auxLinks = [];
+      const it = fields.itemLinks.split(",");
+      for (let index = 0; index < it.length; index++) {
+        auxLinks.push({url:it[index]});
+        
+      }
+
+      publication.itemLinks = auxLinks;
       if(fields.type == "activity"){
         publication.expiration = fields.expiration;
       }

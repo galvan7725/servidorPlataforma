@@ -51,7 +51,11 @@ const publicationSchema = new mongoose.Schema({
                 ref: "User"
             }
         }
-    ]
+    ],
+    itemLinks:[{
+        url: String
+    }]
+
 
 });
 

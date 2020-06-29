@@ -15,7 +15,7 @@ const controller = {
         .populate('comments.postedBy', '_id name')
         .populate("group", "_id name teacher users")
         .populate("group.teacher","_id name")
-        .select("_id title description created mode expiration status items._id items.file.contentType items.title group.users._id")
+        .select("_id title description created mode expiration status items._id items.file.contentType items.title group.users._id itemLinks")
         .exec((err, publication) => {
             if (err || !publication) {
               return res.status(400).json({
