@@ -10,12 +10,9 @@ dotenv.config();
 const controller = {
     publicationById : (req, res, next, id)=>{
         Publication.findById(id)
-        
-        .populate("comments", "_id text created")
-        .populate('comments.postedBy', '_id name')
         .populate("group", "_id name teacher users")
         .populate("group.teacher","_id name")
-        .select("_id title description created mode expiration status items._id items.file.contentType items.title group.users._id itemLinks")
+        .select("_id title description created mode expiration status items._id items.file.contentType items.title group.users._id itemLinks comments")
         .exec((err, publication) => {
             if (err || !publication) {
               return res.status(400).json({
@@ -100,9 +97,8 @@ const controller = {
         postedBy:userId
       }
           Publication.findByIdAndUpdate(publicationId,{ $push: { comments: comment } },{ new: true })
-          .populate("comments", "_id text created")
           .populate('comments.postedBy', '_id name')
-          .select("_id comments.text ")
+          .select("_id comments comments.id comments.text comments.created comments.postedBy")
           .exec((err,result) =>{
             if(err || !result){
               return res.status(400).json({
